@@ -28,7 +28,8 @@ async function convertTSCtoBUMP(tsc) {
 
 async function getMerklePathOrParents(tx) {
     const tscRes = await woc.getMerklePath(tx.id('hex'))
-    if (tscRes.length > 0) {
+    console.log({ tscRes })
+    if (tscRes !== null) {
         tx.merklePath = await convertTSCtoBUMP(tscRes[0])
         return tx
     }
@@ -44,6 +45,7 @@ async function getMerklePathOrParents(tx) {
 export async function POST(req) {
     try {
         const body = await req.json()
+        console.log({ body })
         const { rawtx } = body
         const tx = Transaction.fromHex(rawtx)
         const beef = await getMerklePathOrParents(tx)
