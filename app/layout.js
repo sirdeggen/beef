@@ -5,7 +5,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "BEEF transaction converter",
-  description: "Enrich your oimited data to allow counterparties to ingest SPV transactions on BSV.",
+  description: "Enrich your transaction data with Background Evaluation Extended Format to allow counterparties to ingest SPV transactions on BSV.",
 };
 
 export default function RootLayout({ children }) {

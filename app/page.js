@@ -18,7 +18,7 @@ export default function Home() {
             <main>
                 <h1>🥩 BEEF 🥩</h1>
                 <h2>Background Evaluation Extended Format Service API</h2>
-                <p>Send your rawtx to the /api endpoint to get the BEEF Tx in the response.</p>
+                <p>Send your rawtx to the /api endpoint to get the <a style={{ color: 'white' }} href='https://brc.dev/62' target="_BLANK">BEEF</a> Tx in the response.</p>
                 <code style={{ textAlign: 'left' }}>
                     <pre>{curl}</pre>
                 </code>
