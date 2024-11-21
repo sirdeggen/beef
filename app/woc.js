@@ -1,3 +1,5 @@
+import { MerklePath } from '@bsv/sdk'
+
 // https://api.whatsonchain.com/v1/bsv/main/exchangerate
 /**
  *  WocClient
@@ -10,7 +12,10 @@
 export class WocClient {
     constructor() {
         this.api = 'https://api.whatsonchain.com/v1/bsv/main'
-        return this
+    }
+
+    setNetwork(network) {
+        this.api = `https://api.whatsonchain.com/v1/bsv/${network}`
     }
 
     async getJson(route) {
@@ -75,5 +80,43 @@ export class WocClient {
 
     async getHeader(hash) {
         return this.getJson(`/block/${hash}/header`)
+    }
+
+    async convertTSCtoBUMP(tsc) {
+        const txid = tsc.txOrId
+        const header = await this.getHeader(tsc.target)
+        const bump = {}
+        bump.blockHeight = header.height
+        bump.path = []
+        const leafOfInterest = { hash: txid, txid: true, offset: tsc.index }
+        tsc.nodes.map((hash, idx) => {
+            const offset = tsc.index >> idx ^ 1
+            const leaf = { offset }
+            if (hash === '*') leaf.duplicate = true
+            else leaf.hash = hash
+            if (idx === 0) {
+                if (tsc.index % 2) bump.path.push([leafOfInterest, leaf])
+                else bump.path.push([leaf, leafOfInterest])
+            }
+            else bump.path.push([leaf])
+        })
+        const merklePath = new MerklePath(bump.blockHeight, bump.path)
+        if (header.merkleroot !== merklePath.computeRoot(txid)) throw new Error('Invalid Merkle Path')
+        return merklePath
+    }
+
+    async getMerklePathOrParents(tx) {
+        const tscRes = await this.getMerklePath(tx.id('hex'))
+        if (tscRes !== null) {
+            tx.merklePath = await this.convertTSCtoBUMP(tscRes[0])
+            return tx
+        }
+        await Promise.all(tx.inputs.map(async (input, idx) => {
+            const rawtx = await this.getTx(input.sourceTXID)
+            const inputTx = Transaction.fromHex(rawtx)
+            const st = await this.getMerklePathOrParents(inputTx)
+            tx.inputs[idx].sourceTransaction = st
+        }))
+        return tx
     }
 }
