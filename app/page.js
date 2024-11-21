@@ -15,7 +15,7 @@ const alias = `
 alias beef='beef_func'
 beef_func() {
     txid=$1
-    curl --request POST --url https://beef.xn--nda.network/$txid
+    curl https://beef.xn--nda.network/$txid
 }
 `
 
