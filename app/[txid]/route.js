@@ -10,6 +10,7 @@ export async function GET(req) {
             return Response.json({ error: 'not a txid', txid }, { status: 400 })
         }
 
+        woc.setNetwork('main')
         let rawtx = await woc.getTx(txid)
         if (!rawtx) {
             woc.setNetwork('test')
