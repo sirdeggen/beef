@@ -34,7 +34,7 @@ export default function Home() {
                 <code style={{ textAlign: 'left' }}>
                     <pre>{curl}</pre>
                 </code>
-                <p>Lookup BEEF by txid for historical transactions, simply add the txid to this page URL - <a className="white" href="http://localhost:3000/e797cde97b653d58f64c7e1f48afba140b8ad5acd53539203a83b29aacfe9376">example</a></p>
+                <p>Lookup BEEF by txid for historical transactions, simply add the txid to this page URL - <a className="white" href="/e797cde97b653d58f64c7e1f48afba140b8ad5acd53539203a83b29aacfe9376">example</a></p>
                 <p>You can install this on your local system in some sense by adding an alias to your ~/.zshrc file or equivalent.</p>
                 <code style={{ textAlign: 'left' }}>
                     <pre>{alias}</pre>
