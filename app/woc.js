@@ -1,4 +1,4 @@
-import { MerklePath } from '@bsv/sdk'
+import { MerklePath, Transaction } from '@bsv/sdk'
 
 // https://api.whatsonchain.com/v1/bsv/main/exchangerate
 /**
