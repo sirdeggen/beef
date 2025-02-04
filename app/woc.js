@@ -18,34 +18,96 @@ export class WocClient {
         this.api = `https://api.whatsonchain.com/v1/bsv/${network}`
     }
 
+    requestQueue = [];
+    isProcessingQueue = false;
+
+    async processQueue() {
+        if (this.isProcessingQueue) return;
+        this.isProcessingQueue = true;
+        while (this.requestQueue.length > 0) {
+            const { resolve, request } = this.requestQueue.shift();
+            try {
+                const response = await fetch(request.url, request.options);
+                if (request.options.headers.Accept === 'plain/text') {
+                    const text = await response.text();
+                    resolve(text);
+                } else {
+                    const data = await response.json();
+                    resolve(data);
+                }
+            } catch (error) {
+                console.log({ error })
+                resolve(null);
+            }
+            await new Promise(resolve => setTimeout(resolve, 350));
+        }
+        this.isProcessingQueue = false;
+    }
+
+    queueRequest(url, options) {
+        return new Promise((resolve, reject) => {
+            this.requestQueue.push({ resolve, reject, request: { url, options } });
+            this.processQueue();
+        });
+    }
+
     async getJson(route) {
-        return await (await fetch(this.api + route, {
+        return await this.queueRequest(this.api + route, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
             },
-        })).json()
+        });
     }
 
     async get(route) {
-        return await (await fetch(this.api + route, {
+        return await this.queueRequest(this.api + route, {
             method: 'GET',
             headers: {
                 'Accept': 'plain/text',
             },
-        })).text()
+        });
     }
 
     async post(route, body) {
-        return await (await fetch(this.api + route, {
+        return await this.queueRequest(this.api + route, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
             body: JSON.stringify(body)
-        })).json()
+        });
     }
+
+    // async getJson(route) {
+    //     return await (await fetch(this.api + route, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Accept': 'application/json',
+    //         },
+    //     })).json()
+    // }
+
+    // async get(route) {
+    //     return await (await fetch(this.api + route, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Accept': 'plain/text',
+    //         },
+    //     })).text()
+    // }
+
+    // async post(route, body) {
+    //     return await (await fetch(this.api + route, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //             'Accept': 'application/json',
+    //         },
+    //         body: JSON.stringify(body)
+    //     })).json()
+    // }
 
     async getUtxos(address) {
         console.log({ getUtxo: address })
