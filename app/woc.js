@@ -27,7 +27,7 @@ export class WocClient {
         while (this.requestQueue.length > 0) {
             const { resolve, request } = this.requestQueue.shift();
             try {
-                const response = await fetch(request.url, request.options);
+                const response = await fetch(request.url, request.options, { cache: 'no-store' });
                 if (request.options.headers.Accept === 'plain/text') {
                     const text = await response.text();
                     resolve(text);
