@@ -1,6 +1,8 @@
 import { Transaction } from '@bsv/sdk'
 import { WocClient } from '../woc'
 
+export const dynamic = 'force-dynamic'
+
 const woc = new WocClient()
 
 export async function GET(req) {
