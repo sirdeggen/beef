@@ -27,7 +27,7 @@ export class WocClient {
         while (this.requestQueue.length > 0) {
             const { resolve, request } = this.requestQueue.shift();
             try {
-                const response = await fetch(request.url, request.options, { cache: 'no-store' });
+                const response = await fetch(request.url, request.options, { cache: 'no-store', next: { revalidate: 3600 } });
                 if (request.options.headers.Accept === 'plain/text') {
                     const text = await response.text();
                     resolve(text);
@@ -79,35 +79,6 @@ export class WocClient {
             body: JSON.stringify(body)
         });
     }
-
-    // async getJson(route) {
-    //     return await (await fetch(this.api + route, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Accept': 'application/json',
-    //         },
-    //     })).json()
-    // }
-
-    // async get(route) {
-    //     return await (await fetch(this.api + route, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Accept': 'plain/text',
-    //         },
-    //     })).text()
-    // }
-
-    // async post(route, body) {
-    //     return await (await fetch(this.api + route, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json',
-    //         },
-    //         body: JSON.stringify(body)
-    //     })).json()
-    // }
 
     async getUtxos(address) {
         console.log({ getUtxo: address })
@@ -171,7 +142,7 @@ export class WocClient {
         const tscRes = await this.getMerklePath(tx.id('hex'))
         console.log({tscRes})
         if (tscRes !== null) {
-            tx.merklePath = await this.convertTSCtoBUMP(tscRes[0])
+            tx.merklePath = await this.convertTSCtoBUMP(tscRes)
             console.log({ bump: tx.merklePath})
             return tx
         }
