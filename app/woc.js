@@ -142,9 +142,15 @@ export class WocClient {
         const tscRes = await this.getMerklePath(tx.id('hex'))
         console.log({tscRes})
         if (tscRes !== null) {
-            tx.merklePath = await this.convertTSCtoBUMP(tscRes)
-            console.log({ bump: tx.merklePath})
-            return tx
+            if (Array.isArray(tscRes)) {
+                tx.merklePath = await this.convertTSCtoBUMP(tscRes[0])
+                console.log({ bump: tx.merklePath})
+                return tx
+            } else {
+                tx.merklePath = await this.convertTSCtoBUMP(tscRes)
+                console.log({ bump: tx.merklePath})
+                return tx
+            }
         }
         await Promise.all(tx.inputs.map(async (input, idx) => {
             const rawtx = await this.getTx(input.sourceTXID)
