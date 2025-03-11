@@ -1,6 +1,8 @@
 import { Transaction } from '@bsv/sdk'
 import { WocClient, getMerklePathOrParents } from '../woc'
 
+export const fetchCache = 'force-no-store';
+
 const woc = new WocClient()
 
 export async function POST(req) {

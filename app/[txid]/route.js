@@ -1,7 +1,7 @@
 import { Transaction } from '@bsv/sdk'
 import { WocClient } from '../woc'
 
-export const dynamic = 'force-dynamic'
+export const fetchCache = 'force-no-store';
 
 const woc = new WocClient()
 
