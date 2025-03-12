@@ -7,10 +7,10 @@ beef_func() {
 
 alias rawbeef='rawbeef_func'
 rawbeef_func() {
-    curl --request POST \
-    --url https://beef.xn--nda.network/api \
-    --header 'Content-Type: application/json' \
-    --data "{\"rawtx\": \"$1\"}"
+    curl --request POST \ 
+    --url https://beef.xn--nda.network/api \ 
+    --header 'Content-Type: application/json' \ 
+    --data "{\"rawtx\": \"$1\"}" 
 }`
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
                 <p style={{ textAlign: 'center' }}>Get BEEF for any txid or rawtx.</p>
                 <a className="white" href="/e797cde97b653d58f64c7e1f48afba140b8ad5acd53539203a83b29aacfe9376">example</a>
                 <h2>MacOS Install</h2>
-                <p>Appending this to your ~/.zshrc</p>
+                <p>Append these functions to your ~/.zshrc</p>
                 <code style={{ textAlign: 'left' }}>
                     <pre>{alias}</pre>
                 </code>
