@@ -39,7 +39,7 @@ export default function Home() {
                 </code>
 
                 <h3>2. rawbeef &lt;rawtx&gt;</h3>
-                <p>Any time you need to get BEEF for a txid, just type:</p>
+                <p>Any time you need to get BEEF from a new rawtx, just type:</p>
                 <code style={{ textAlign: 'left' }}>
                     <pre>rawbeef 01000000017652614aaa977365339cbbbb9ab66dfba52de7bf98ebabf705712e6c7f5e42ae010000006b483045022100c30a41075cf83c27a492e926c300a85ec48c451e4e8d3011ec43883f4fe86e050220476135dd4aa544aa5d97dba3221c9de61dcc4dcdea3791d57a9354d8ee5a4205412103f1e8297b4fd692cb89356e91ac32edb4b3560c116397799a276fc7c8c8494390ffffffff02c6d20000000000001976a9146f126db8e0ef9db75a65c1ea0507881a2e1f0f5488acf7680700000000001976a914944d91ba2f21fdddaf8d3fc59ae62cfbe0092d8f88ac00000000</pre>
                 </code>
